@@ -26,12 +26,10 @@ class Workflow(Base):
     name = Column(String, nullable=False)
     type = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False)
+    project_id = Column(UUID(as_uuid=True), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    # Use string reference to avoid circular imports - DO NOT use back_populates here
-    project = relationship("Project")
     entities = relationship("WorkflowEntity", back_populates="workflow", cascade="all, delete-orphan")
     runs = relationship("Run", back_populates="workflow", cascade="all, delete-orphan")
 

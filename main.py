@@ -12,6 +12,7 @@ import json
 from routes import api_router
 from fastapi.responses import StreamingResponse
 from functions.sse import event_generator
+from fastapi.middleware.cors import CORSMiddleware
 
 logging.basicConfig(
     level=logging.INFO,
@@ -36,6 +37,14 @@ app = FastAPI(
 )
 
 app.include_router(api_router, prefix="", tags=["Workflows"])
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 Instrumentator().instrument(app).expose(app)
 
